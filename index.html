@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080f1d"><meta name="description" content="30 mô hình dashboard KPI đa lĩnh vực, mỗi mô hình 9 biểu đồ neon SVG, chạy offline và xuất HTML độc lập."><title>Neon Matrix · 30 KPI Dashboard Models</title><style>
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:dark;--bg:#060a13;--surface:#0c1525;--surface2:#111e32;--border:#1a3047;--txt:#e7f3ff;--muted:#8a9eb7;--cyan:#40e6ff;--pink:#f370ff;--lime:#a3ff8c}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 60% -28%,#142844 0%,#080f1c 50%,#060a13 100%);color:var(--txt);min-width:320px}
+button,input,select{font:inherit}button{cursor:pointer}a{color:var(--cyan)}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.app{height:100dvh;display:flex;overflow:hidden}
+.sidebar{width:264px;flex-shrink:0;border-right:1px solid #213449;background:#080f1d;display:flex;flex-direction:column;min-height:0}
+.brand{display:flex;align-items:center;gap:12px;padding:20px 18px 18px;border-bottom:1px solid var(--border)}
+.mark{display:grid;place-items:center;width:42px;height:42px;border:1px solid #42dfff80;border-radius:13px;background:#0c2434;color:var(--cyan);box-shadow:0 0 26px #00e4ff22;font-weight:900;font-size:24px}
+.brand strong{display:block;font-size:16px;letter-spacing:.5px}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:1.2px;margin-top:3px}
+.searchBox{margin:15px 12px 8px;position:relative}.searchBox span{position:absolute;left:11px;top:10px;color:#6886a3}
+.searchBox input{width:100%;height:38px;background:#111e2f;border:1px solid #263d56;border-radius:9px;color:var(--txt);padding:0 12px 0 35px;font-size:12px}
+.category{margin:0 12px 10px;width:calc(100% - 24px);padding:10px;color:#bdd3e8;background:#101d2d;border:1px solid #263d56;border-radius:9px;font-size:12px}
+.sidebar-label{display:flex;justify-content:space-between;margin:7px 17px 8px;font-size:10px;color:#7188a3;text-transform:uppercase;font-weight:700;letter-spacing:1.3px}
+.model-list{padding:0 8px 16px;overflow:auto;scrollbar-width:thin;scrollbar-color:#35526c transparent}
+.model-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 10px;text-align:left;border:1px solid transparent;background:transparent;color:#9eb3cc;border-radius:10px;margin-bottom:3px}
+.model-btn:hover{background:#142339;color:#fff}.model-btn.active{background:linear-gradient(90deg,#142d41,#101f33);border-color:#246681;color:#fff;box-shadow:inset 3px 0 0 var(--cyan),0 0 20px #13bcd719}
+.model-btn .emoji{font-size:18px}.model-btn .num{margin-left:auto;font-size:10px;font-variant-numeric:tabular-nums;color:#6f89a3}
+.side-bottom{padding:14px 16px;border-top:1px solid var(--border);font-size:10px;color:#7d96b0;line-height:1.7}
+.main{flex:1;min-width:0;min-height:0;display:flex;flex-direction:column}
+.topbar{height:68px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 23px;border-bottom:1px solid #24394f;background:#0a1321b5;backdrop-filter:blur(10px)}
+.head-left .eyebrow{font-size:10px;letter-spacing:2px;font-weight:800;color:var(--cyan);text-transform:uppercase}.head-left .headline{font-size:17px;letter-spacing:-.35px;font-weight:750;margin-top:4px}
+.actions,.tool-actions,.inline-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid #31516a;border-radius:9px;padding:10px 12px;background:#102137;color:#d9ecff;font-size:11px;font-weight:750;white-space:nowrap;transition:.18s}
+.btn:hover{border-color:#6fd8ff;background:#15314b;transform:translateY(-1px)}
+.btn.primary{background:linear-gradient(110deg,#0b7c9d,#2358a8);border-color:#38bce4;color:#fff;box-shadow:0 0 22px #0bbdfa24}.btn.accent{border-color:#aa5cff99;background:#30214d;color:#f1d9ff}
+.workspace{--h:190;flex:1;min-height:0;overflow:auto;padding:19px 22px 14px;scrollbar-width:thin;scrollbar-color:#314d6c transparent}
+.workspace::before{content:"";position:fixed;right:12%;top:18%;width:270px;height:270px;border-radius:50%;background:hsl(var(--h) 100% 60% / .055);pointer-events:none;filter:blur(90px)}
+.overview{display:flex;align-items:flex-start;gap:14px;justify-content:space-between;margin-bottom:15px}
+.section-title{display:flex;align-items:center;gap:11px}.section-title .bigicon{font-size:31px;display:grid;place-items:center;width:49px;height:49px;border:1px solid hsl(var(--h) 100% 65% / .33);border-radius:14px;background:hsl(var(--h) 100% 50% / .12)}
+.overview h1{font-size:22px;line-height:1.2;letter-spacing:-.5px;margin:0 0 5px}.overview p{font-size:12px;margin:0;color:var(--muted);line-height:1.4}
+.flag{font-size:10px;border:1px solid #cb9b43;background:#312515;color:#f2c578;border-radius:100px;padding:8px 11px;font-weight:750;white-space:nowrap}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.filter{display:flex;align-items:center;gap:7px;border:1px solid #2b435b;background:#0d1b2e;border-radius:9px;padding:6px 9px;font-size:11px;color:#8faec7}
+.filter select{color:#e3f6ff;background:transparent;border:0;outline:none;min-width:60px;font-size:11px}.filter select option{color:#172638}
+.sim-toggle{display:flex;align-items:center;gap:7px}.sim-dot{height:7px;width:7px;border-radius:50%;background:#f8ac5e;box-shadow:0 0 10px #ffb66d}.sim-dot.on{background:#5cffb4;box-shadow:0 0 12px #5cffb4}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin-bottom:12px}
+.metric{border:1px solid #24415a;border-radius:12px;padding:12px 15px;background:linear-gradient(125deg,#13263d,#0c182a 75%);display:flex;align-items:center;justify-content:space-between;min-height:72px;overflow:hidden;position:relative}
+.metric::after{content:"";width:100px;height:100px;border-radius:50%;position:absolute;right:-43px;top:-57px;background:hsl(var(--h) 95% 61% / .09)}
+.metric .label{font-size:10px;color:#a3b7d0;text-transform:uppercase;letter-spacing:.9px;font-weight:750}.metric .value{font-size:23px;font-weight:850;margin-top:5px;letter-spacing:-.7px;font-variant-numeric:tabular-nums;color:#e8f6ff}.metric .delta{font-size:11px;font-weight:800;color:#76f4b3;white-space:nowrap}
+.matrix-head{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#89a4bc;margin:2px 0 9px}
+.matrix-head strong{color:#d6eaff;letter-spacing:.6px}.matrix-head .count{color:hsl(var(--h) 100% 67%);font-variant-numeric:tabular-nums}
+.chart-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(190px,1fr);gap:11px;min-height:608px}
+.chart-card{border-radius:13px;border:1px solid #26415a;position:relative;min-width:0;overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(160deg,#101e31,#0b1526);box-shadow:inset 0 1px 0 #ffffff06,0 9px 25px #0002;transition:border-color .2s,transform .2s}
+.chart-card:hover{border-color:hsl(var(--h) 100% 64% / .65);transform:translateY(-1px)}
+.chart-card:first-child{box-shadow:inset 0 2px 0 hsl(var(--h) 100% 63% / .8),0 0 27px hsl(var(--h) 100% 53% / .08)}
+.chart-card .chart-head{display:flex;justify-content:space-between;align-items:center;gap:5px;padding:11px 12px 2px}
+.chart-title{font-size:11px;font-weight:750;letter-spacing:.1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart-head .tools{display:flex;gap:4px}
+.icon-btn{font-size:12px;color:#7597b7;background:transparent;border:1px solid transparent;border-radius:6px;min-width:24px;height:23px}
+.icon-btn:hover{border-color:#36627e;color:#ecfbff;background:#1c3149}
+.chart-content{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:1px 9px 7px;position:relative}
+.chart-content svg{display:block;width:100%;height:100%;max-height:174px;overflow:visible;filter:drop-shadow(0 0 6px #10d2ed10)}
+.chart-foot{padding:0 12px 9px;display:flex;align-items:center;justify-content:space-between;color:#647e99;font-size:9px}
+.chart-foot em{font-style:normal;color:hsl(var(--h) 100% 66%)}
+.footer{display:flex;justify-content:space-between;gap:8px;padding:13px 0 2px;font-size:10px;color:#728ba5;flex-wrap:wrap}.footer a{color:#9bdffc;text-decoration:none}
+#toast{position:fixed;bottom:23px;right:22px;z-index:20;background:#173449;color:#deffff;border:1px solid #4daed1;padding:11px 17px;border-radius:10px;font-size:12px;box-shadow:0 12px 35px #0008;display:none}
+dialog{border:1px solid #346480;border-radius:16px;color:#e8f5ff;background:#0c1929;box-shadow:0 28px 100px #000a;width:min(780px,94vw);padding:0}
+dialog::backdrop{background:#020713cf;backdrop-filter:blur(5px)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid #243e54}
+.modal-body{padding:16px 22px 22px}.modal-body svg{width:100%;height:340px}.modal-body p{font-size:12px;color:#a4bad0;line-height:1.65}.modal-actions{display:flex;justify-content:flex-end;gap:8px}
+.empty{margin:15px;color:#8da9c1;font-size:12px;line-height:1.5}.shortcuts{font-size:10px;color:#6f8ca8}
+@media(max-width:1200px){.sidebar{width:225px}.chart-grid{grid-auto-rows:minmax(180px,1fr)}.head-left .headline{font-size:15px}.btn{padding:9px 10px}}
+@media(max-width:900px){.sidebar{width:71px}.brand{padding:17px 13px}.brand strong,.brand small,.searchBox,.category,.sidebar-label,.model-btn .name,.model-btn .num,.side-bottom{display:none}.model-list{padding:15px 7px}.model-btn{justify-content:center;padding:12px 0}.model-btn .emoji{font-size:21px}.overview h1{font-size:19px}.topbar{height:auto;min-height:64px;flex-wrap:wrap;padding:10px 14px}.workspace{padding:15px}.chart-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.sidebar{width:54px}.brand{padding:10px 6px}.mark{width:40px}.metrics{grid-template-columns:1fr}.metric{min-height:66px}.chart-grid{grid-template-columns:1fr;grid-auto-rows:205px;min-height:0}.overview{flex-direction:column}.flag{align-self:flex-start}.actions{gap:5px}.btn{font-size:10px;padding:8px}.workspace{padding:11px}.topbar{padding:10px}.head-left .eyebrow{font-size:9px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+@media print{.sidebar,.topbar,.toolbar,.chart-head .tools{display:none!important}.app{height:auto;display:block}.workspace{overflow:visible;padding:0}.chart-grid{page-break-inside:avoid}.chart-card{break-inside:avoid}.footer{color:#334}}
+</style></head><body><div class="app" id="app"></div><dialog id="chart-modal"><div class="modal-header"><strong id="modal-title">Chi tiết biểu đồ</strong><button class="btn" data-action="close-modal">✕ Đóng</button></div><div class="modal-body"></div></dialog><div id="toast" role="status" aria-live="polite"></div><script type="application/json" id="model-data">[{"id":"construction","index":0,"icon":"🏗️","name":"Xây dựng","category":"Hạ tầng","subtitle":"Tiến độ, ngân sách và nguồn lực công trình","hue":39,"axes":["Quy hoạch","Thi công","Hoàn thiện","Nghiệm thu","Nhân lực","Vật tư"],"metrics":[{"label":"Dự án hoạt động","value":"24","delta":"+3 dự án"},{"label":"Tiến độ bình quân","value":"82%","delta":"+4,2 điểm"},{"label":"Ngân sách kế hoạch","value":"48,2 tỷ","delta":"+6,4%"}]},{"id":"education","index":1,"icon":"🎓","name":"Giáo dục","category":"Dịch vụ","subtitle":"Tuyển sinh, giữ chân người học và chất lượng đào tạo","hue":262,"axes":["Tuyển sinh","Đào tạo","Học vụ","Giảng viên","Tốt nghiệp","Học bổng"],"metrics":[{"label":"Tuyển sinh","value":"4.380","delta":"+5,5%"},{"label":"Giữ chân sinh viên","value":"91,3%","delta":"+1,8 điểm"},{"label":"Hoàn thành khóa","value":"87,5%","delta":"+3,4 điểm"}]},{"id":"energy","index":2,"icon":"⚡","name":"Năng lượng","category":"Công nghiệp","subtitle":"Phụ tải, công suất và vận hành nhà máy","hue":55,"axes":["Phụ tải","Turbine","Trạm điện","Điện năng","Bảo trì","Hiệu suất"],"metrics":[{"label":"Công suất","value":"1.240 MW","delta":"+3,1%"},{"label":"Điện phát","value":"842 MWh","delta":"+4,8%"},{"label":"Hiệu suất","value":"92,7%","delta":"+0,8 điểm"}]},{"id":"government","index":3,"icon":"🏛️","name":"An toàn giao thông","category":"Chính phủ","subtitle":"Giám sát tai nạn và hiệu quả an toàn đường bộ","hue":203,"axes":["Tuyến đường","Giao lộ","Phương tiện","Điều tra","Cảnh báo","Ứng cứu"],"metrics":[{"label":"Số sự cố","value":"12.847","delta":"-4,2%"},{"label":"Can thiệp xử lý","value":"3.124","delta":"+6,8%"},{"label":"Giảm nguy cơ","value":"18,6%","delta":"+1,5 điểm"}]},{"id":"health","index":4,"icon":"🏥","name":"Y tế","category":"Dịch vụ","subtitle":"Vận hành bệnh viện và hiệu quả chăm sóc","hue":163,"axes":["Nội trú","Ngoại trú","Cấp cứu","Phẫu thuật","Xét nghiệm","Dược lâm sàng"],"metrics":[{"label":"Lượt khám","value":"8.420","delta":"+8,5%"},{"label":"Công suất giường","value":"82%","delta":"+3 điểm"},{"label":"Hài lòng","value":"4,6/5","delta":"+0,2"}]},{"id":"hotel","index":5,"icon":"🏨","name":"Khách sạn","category":"Dịch vụ","subtitle":"Công suất phòng, doanh thu và trải nghiệm khách","hue":316,"axes":["Phòng nghỉ","Đặt phòng","Dịch vụ","F&B","Khách đoàn","Khách lẻ"],"metrics":[{"label":"Tỷ lệ lấp đầy","value":"86,2%","delta":"+6,3 điểm"},{"label":"Doanh thu","value":"12,4 tỷ","delta":"+9,1%"},{"label":"Điểm đánh giá","value":"4,8/5","delta":"+0,2"}]},{"id":"insurance","index":6,"icon":"🛡️","name":"Bảo hiểm","category":"Tài chính","subtitle":"Hồ sơ bồi thường, tổn thất và rủi ro","hue":288,"axes":["Ô tô","Sức khỏe","Nhà ở","Doanh nghiệp","Hồ sơ","Giám định"],"metrics":[{"label":"Hợp đồng","value":"18.640","delta":"+8,1%"},{"label":"Giải quyết đúng hạn","value":"94,2%","delta":"+2,4 điểm"},{"label":"Bồi thường","value":"6,8 tỷ","delta":"-3,2%"}]},{"id":"oilgas","index":7,"icon":"🛢️","name":"Dầu khí","category":"Công nghiệp","subtitle":"Khai thác, an toàn công nghiệp và chi phí","hue":22,"axes":["Giếng khoan","Đường ống","Nén khí","Bảo trì","Kho bãi","An toàn"],"metrics":[{"label":"Sản lượng","value":"18.400 bbl","delta":"+2,5%"},{"label":"Thiết bị online","value":"96,8%","delta":"+1,2 điểm"},{"label":"Hiệu quả","value":"89,4%","delta":"+3,1 điểm"}]},{"id":"pharma","index":8,"icon":"💊","name":"Dược phẩm","category":"Dịch vụ","subtitle":"Bán hàng dược phẩm, tồn kho và tuân thủ","hue":337,"axes":["Thuốc kê đơn","OTC","Bệnh viện","Nhà thuốc","Kho lạnh","Phân phối"],"metrics":[{"label":"Doanh thu","value":"26,5 tỷ","delta":"+12,4%"},{"label":"Số đơn hàng","value":"7.820","delta":"+9,1%"},{"label":"Tồn kho đạt chuẩn","value":"97,5%","delta":"+1,7 điểm"}]},{"id":"realestate","index":9,"icon":"🏘️","name":"Bất động sản","category":"Tài chính","subtitle":"Danh mục tài sản, dòng tiền và tỷ lệ cho thuê","hue":187,"axes":["Nhà ở","Văn phòng","Đất nền","Thương mại","Cho thuê","Định giá"],"metrics":[{"label":"Tài sản quản lý","value":"148","delta":"+12"},{"label":"Tỷ lệ cho thuê","value":"91,5%","delta":"+3,2 điểm"},{"label":"Dòng tiền","value":"18,2 tỷ","delta":"+6,9%"}]},{"id":"retail","index":10,"icon":"🛍️","name":"Bán lẻ","category":"Dịch vụ","subtitle":"Doanh số điểm bán, giỏ hàng và tồn kho","hue":327,"axes":["Cửa hàng","Thực phẩm","Gia dụng","Khuyến mãi","Khách mới","Thành viên"],"metrics":[{"label":"Doanh số","value":"3,48 tỷ","delta":"+14,2%"},{"label":"Đơn hàng","value":"28.420","delta":"+8,6%"},{"label":"Tỷ lệ quay lại","value":"42%","delta":"+3,1 điểm"}]},{"id":"telecom","index":11,"icon":"📡","name":"Viễn thông","category":"Công nghệ","subtitle":"Chất lượng mạng, lưu lượng và thuê bao","hue":205,"axes":["4G","5G","Cáp quang","Trạm BTS","Tổng đài","Khách hàng"],"metrics":[{"label":"Thuê bao","value":"2,4 triệu","delta":"+6,7%"},{"label":"Uptime","value":"99,94%","delta":"+0,04 điểm"},{"label":"Lưu lượng","value":"842 TB","delta":"+12,3%"}]},{"id":"finance","index":12,"icon":"💰","name":"Tài chính doanh nghiệp","category":"Tài chính","subtitle":"Thanh khoản, lợi nhuận và quản trị dòng tiền","hue":144,"axes":["Doanh thu","Chi phí","Công nợ","Đầu tư","Thanh khoản","Rủi ro"],"metrics":[{"label":"Doanh thu","value":"128,4 tỷ","delta":"+16,2%"},{"label":"Biên lợi nhuận","value":"23,6%","delta":"+2,1 điểm"},{"label":"Dòng tiền ròng","value":"18,7 tỷ","delta":"+8,8%"}]},{"id":"it","index":13,"icon":"💻","name":"Dự án phần mềm","category":"Công nghệ","subtitle":"Sprint, chất lượng phần mềm và hiệu suất kỹ thuật","hue":265,"axes":["Phát triển","QA","DevOps","Hạ tầng","Bug","Sprint"],"metrics":[{"label":"Sprint hoàn thành","value":"34","delta":"+4"},{"label":"Uptime","value":"99,9%","delta":"+0,1 điểm"},{"label":"Độ phủ test","value":"88,6%","delta":"+5,2 điểm"}]},{"id":"property","index":14,"icon":"🏢","name":"Quản lý tòa nhà","category":"Đô thị","subtitle":"Vận hành kỹ thuật, cho thuê và tiện ích","hue":194,"axes":["Điện","Nước","HVAC","Thang máy","An ninh","Cho thuê"],"metrics":[{"label":"Diện tích khai thác","value":"85.400 m²","delta":"+4,2%"},{"label":"Lấp đầy","value":"93,8%","delta":"+2,3 điểm"},{"label":"Sự cố xử lý","value":"98%","delta":"+1,6 điểm"}]},{"id":"webgis","index":15,"icon":"🗺️","name":"WebGIS","category":"Công nghệ","subtitle":"Dữ liệu không gian, tile và hiệu năng hiển thị","hue":183,"axes":["Vector","Raster","PMTiles","OGC","API","Không gian"],"metrics":[{"label":"Lớp bản đồ","value":"124","delta":"+8"},{"label":"Yêu cầu bản đồ","value":"1,8 triệu","delta":"+12,6%"},{"label":"Cache hit","value":"96,4%","delta":"+1,3 điểm"}]},{"id":"geoai","index":16,"icon":"🧠","name":"GeoAI","category":"Công nghệ","subtitle":"Suy luận không gian, AI Agent và độ chính xác mô hình","hue":277,"axes":["Phân loại","Phát hiện","Dự báo","Agent","Mô hình","Vệ tinh"],"metrics":[{"label":"Tác vụ AI","value":"28.400","delta":"+22,1%"},{"label":"F1 mô phỏng","value":"91,2%","delta":"+2,6 điểm"},{"label":"Thời gian xử lý","value":"1,8 s","delta":"-12%"}]},{"id":"environment","index":17,"icon":"🌿","name":"Quan trắc môi trường","category":"Môi trường","subtitle":"Chất lượng không khí, nước và cảnh báo cảm biến","hue":154,"axes":["PM2.5","AQI","Nước mặt","Mưa","Nhiệt độ","Tiếng ồn"],"metrics":[{"label":"Trạm quan trắc","value":"186","delta":"+14"},{"label":"Dữ liệu hợp lệ","value":"98,6%","delta":"+1,4 điểm"},{"label":"Cảnh báo","value":"42","delta":"-8,5%"}]},{"id":"agriculture","index":18,"icon":"🌾","name":"Nông nghiệp thông minh","category":"Nông nghiệp","subtitle":"Năng suất cây trồng, IoT và tưới thông minh","hue":88,"axes":["Canh tác","Độ ẩm","Sinh trưởng","Dinh dưỡng","Tưới","Mùa vụ"],"metrics":[{"label":"Diện tích theo dõi","value":"12.450 ha","delta":"+8,4%"},{"label":"Năng suất","value":"6,8 tấn/ha","delta":"+5,2%"},{"label":"Tiết kiệm nước","value":"28%","delta":"+4 điểm"}]},{"id":"water","index":19,"icon":"💧","name":"Quản lý nguồn nước","category":"Môi trường","subtitle":"Mạng cấp nước, chất lượng và thất thoát","hue":194,"axes":["Cấp nước","Áp lực","Chất lượng","Đường ống","Hồ chứa","Thất thoát"],"metrics":[{"label":"Lưu lượng","value":"84.200 m³","delta":"+3,2%"},{"label":"Thất thoát","value":"13,4%","delta":"-1,6 điểm"},{"label":"Cảm biến online","value":"99,1%","delta":"+0,8 điểm"}]},{"id":"logistics","index":20,"icon":"🚚","name":"Logistics","category":"Hạ tầng","subtitle":"Chuỗi cung ứng, giao hàng và tối ưu tuyến","hue":25,"axes":["Kho hàng","Tuyến xe","Đơn giao","Hải quan","Bốc dỡ","Last-mile"],"metrics":[{"label":"Chuyến vận tải","value":"4.860","delta":"+11,8%"},{"label":"Đúng hẹn","value":"96,2%","delta":"+2,5 điểm"},{"label":"Chi phí/chuyến","value":"1,2 triệu","delta":"-7,4%"}]},{"id":"cyber","index":21,"icon":"🛡️","name":"An ninh mạng","category":"Công nghệ","subtitle":"An toàn SOC, sự kiện và thời gian phản ứng","hue":352,"axes":["Endpoint","Firewall","IDS","SIEM","Ứng cứu","Cloud"],"metrics":[{"label":"Sự kiện giám sát","value":"1,28 triệu","delta":"+9,5%"},{"label":"Cảnh báo xác minh","value":"248","delta":"+4,8%"},{"label":"MTTR","value":"18 phút","delta":"-13,2%"}]},{"id":"ecommerce","index":22,"icon":"🛒","name":"Thương mại điện tử","category":"Dịch vụ","subtitle":"Chuyển đổi khách hàng và hiệu quả bán hàng số","hue":307,"axes":["Truy cập","Giỏ hàng","Thanh toán","Giao hàng","Hoàn trả","CSKH"],"metrics":[{"label":"GMV","value":"42,8 tỷ","delta":"+18,2%"},{"label":"Tỷ lệ chuyển đổi","value":"4,8%","delta":"+0,7 điểm"},{"label":"Đơn hàng","value":"94.820","delta":"+12,4%"}]},{"id":"smarttraffic","index":23,"icon":"🚦","name":"Giao thông thông minh","category":"Đô thị","subtitle":"Lưu lượng đô thị, nút giao và dự báo ùn tắc","hue":17,"axes":["Đường chính","Giao lộ","Cảm biến","Camera","Đèn tín hiệu","Luồng xe"],"metrics":[{"label":"Nút giao online","value":"246","delta":"+18"},{"label":"Lưu lượng","value":"382.400 xe","delta":"+6,1%"},{"label":"Thời gian trễ","value":"4,8 phút","delta":"-8,2%"}]},{"id":"tourism","index":24,"icon":"🏖️","name":"Du lịch","category":"Dịch vụ","subtitle":"Lượt khách, mùa vụ và trải nghiệm điểm đến","hue":280,"axes":["Khách nội địa","Quốc tế","Lưu trú","Điểm đến","Dịch vụ","Sự kiện"],"metrics":[{"label":"Lượt khách","value":"124.800","delta":"+13,6%"},{"label":"Thời gian lưu trú","value":"3,4 ngày","delta":"+0,5 ngày"},{"label":"Chi tiêu/khách","value":"2,8 triệu","delta":"+9,2%"}]},{"id":"manufacturing","index":25,"icon":"🏭","name":"Sản xuất công nghiệp","category":"Công nghiệp","subtitle":"OEE, chuỗi sản xuất và chất lượng đầu ra","hue":43,"axes":["Dây chuyền","Thiết bị","QC","Vật tư","Bảo trì","Nhân công"],"metrics":[{"label":"Sản lượng","value":"86.400","delta":"+8,3%"},{"label":"OEE","value":"87,4%","delta":"+4,1 điểm"},{"label":"Phế phẩm","value":"1,8%","delta":"-0,6 điểm"}]},{"id":"smartcity","index":26,"icon":"🌆","name":"Đô thị thông minh","category":"Đô thị","subtitle":"Đô thị số, dịch vụ công và vận hành IoT","hue":221,"axes":["Hạ tầng","IoT","Chiếu sáng","Dân cư","Hành chính","Môi trường"],"metrics":[{"label":"Thiết bị IoT","value":"24.600","delta":"+16,4%"},{"label":"Dịch vụ số","value":"86","delta":"+12"},{"label":"Phản ánh xử lý","value":"94,8%","delta":"+3,2 điểm"}]},{"id":"renewables","index":27,"icon":"☀️","name":"Năng lượng tái tạo","category":"Môi trường","subtitle":"Điện mặt trời, gió và hiệu quả lưu trữ","hue":48,"axes":["Mặt trời","Gió","Pin lưu trữ","Điều độ","Lưới điện","Dự báo"],"metrics":[{"label":"Điện tái tạo","value":"482 MWh","delta":"+14,2%"},{"label":"Hệ số công suất","value":"36,4%","delta":"+1,8 điểm"},{"label":"CO₂ tránh phát thải","value":"284 tấn","delta":"+11,6%"}]},{"id":"waste","index":28,"icon":"♻️","name":"Quản lý chất thải","category":"Môi trường","subtitle":"Thu gom, tái chế và vận hành kinh tế tuần hoàn","hue":128,"axes":["Thu gom","Phân loại","Tái chế","Xử lý","Chôn lấp","Vận chuyển"],"metrics":[{"label":"Thu gom","value":"842 tấn","delta":"+5,1%"},{"label":"Tái chế","value":"46,8%","delta":"+4,4 điểm"},{"label":"Tuyến tối ưu","value":"112","delta":"+18"}]},{"id":"egov","index":29,"icon":"📋","name":"Chính quyền số","category":"Chính phủ","subtitle":"Dịch vụ công, hồ sơ trực tuyến và SLA","hue":228,"axes":["Tiếp nhận","Thẩm định","Ký số","Trả kết quả","Phản hồi","SLA"],"metrics":[{"label":"Hồ sơ tiếp nhận","value":"42.860","delta":"+18,4%"},{"label":"Đúng hạn","value":"98,2%","delta":"+1,4 điểm"},{"label":"Dịch vụ trực tuyến","value":"242","delta":"+26"}]}]</script><script>(function boot(){
+"use strict";
+const models=JSON.parse(document.getElementById("model-data").textContent);
+const categories=["Tất cả",...new Set(models.map(m=>m.category))];
+const chartTypes=["line","bar","donut","heatmap","gauge","radar","scatter","waterfall","funnel","treemap","hbar","bubble","stacked","timeline","area","candlestick","radial"];
+const chartNames={
+line:"Diễn biến theo thời gian",bar:"So sánh theo nhóm",donut:"Cơ cấu phân bổ",heatmap:"Ma trận cường độ",gauge:"Chỉ số mục tiêu",radar:"Hồ sơ đa chiều",scatter:"Tương quan chỉ số",waterfall:"Phân rã biến động",funnel:"Phễu vận hành",treemap:"Phân cấp danh mục",hbar:"Xếp hạng hiệu suất",bubble:"Quy mô tương quan",stacked:"Cơ cấu tích lũy",timeline:"Tiến độ theo tuyến",area:"Xu hướng tích lũy",candlestick:"Biên độ biến động",radial:"Phổ chỉ số vòng"};
+const chartsDescriptions={
+line:"Đường biểu diễn biến động chỉ số theo các chu kỳ giả định, có đường so sánh.",
+bar:"So sánh chỉ số chuẩn hóa giữa các nhóm hoạt động.",
+donut:"Minh họa tỷ trọng các nhóm trong tổng thể mô phỏng.",
+heatmap:"Cường độ tại các tổ hợp ngày và khung thời gian, thang màu tương đối.",
+gauge:"Đo mức đạt mục tiêu minh họa trong khoảng 0–100%.",
+radar:"Hồ sơ hiệu quả đa tiêu chí được chuẩn hóa theo cùng thang đo.",
+scatter:"Phân bố mẫu giả định nhằm quan sát mối liên hệ giữa hai biến.",
+waterfall:"Cho thấy các yếu tố làm tăng hoặc giảm giá trị mô phỏng.",
+funnel:"Số lượng tương đối giảm dần qua các bước trong quy trình.",
+treemap:"Diện tích hình chữ nhật biểu diễn quy mô tương đối của từng nhóm.",
+hbar:"Xếp hạng các nhóm theo chỉ số hiệu quả giả định.",
+bubble:"Kích thước và vị trí điểm thể hiện ba biến mô phỏng.",
+stacked:"Thành phần tích lũy của mỗi nhóm, tổng chiều dài biểu diễn quy mô.",
+timeline:"Thời gian thực hiện giả định của các tác vụ song song.",
+area:"Diện tích dưới đường biểu diễn mức tích lũy qua chu kỳ.",
+candlestick:"Khoảng dao động thấp/cao và mở/đóng theo chu kỳ mô phỏng; không phải dữ liệu giá thị trường.",
+radial:"Các thanh hướng tâm thể hiện chỉ số theo nhiều phân nhóm."};
+let ui={id:models[0].id,search:"",category:"Tất cả",period:"30",region:"Toàn quốc",tick:0,running:false};
+let toastTimer;
+const $=sel=>document.querySelector(sel);
+const safe=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const clamp=(n,low,high)=>Math.max(low,Math.min(high,n));
+function hash(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function rng(seed){let a=seed>>>0;return()=>{a+=0x6D2B79F5;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
+function model(){return models.find(m=>m.id===ui.id)||models[0]}
+function typesFor(m){let start=(m.index*3)%chartTypes.length;return Array.from({length:9},(_,i)=>chartTypes[(start+i)%chartTypes.length])}
+function svgChart(type,m,i,big=false){
+  const n=rng(hash(m.id+"_"+type+"_"+i+"_"+ui.period+"_"+ui.region+"_"+Math.floor(ui.tick/2)));
+  const A=`hsl(${m.hue} 100% 66%)`,B="#e179ff",C="#48e6ff",D="#ffc36e",muted="#7896ad",dim="#293e56";
+  const v=Array.from({length:16},()=>25+Math.round(n()*67));
+  const cat=m.axes;
+  const f=(x)=>Number(x).toFixed(1);
+  const tx=(x,y,t,color=muted,sz=10,anchor="middle")=>`<text x="${f(x)}" y="${f(y)}" fill="${color}" font-size="${sz}" text-anchor="${anchor}" font-family="system-ui, sans-serif">${safe(t)}</text>`;
+  const ln=(x1,y1,x2,y2,color=dim,w=1,dash="")=>`<line x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}" stroke="${color}" stroke-width="${w}" ${dash?`stroke-dasharray="${dash}"`:""}/>`;
+  const rc=(x,y,w,h,color,rad=3)=>`<rect x="${f(x)}" y="${f(y)}" width="${f(Math.max(0,w))}" height="${f(Math.max(0,h))}" rx="${rad}" fill="${color}"/>`;
+  const ci=(x,y,r,color,other="")=>`<circle cx="${f(x)}" cy="${f(y)}" r="${f(r)}" fill="${color}" ${other}/>`;
+  let s="";
+  if(type==="line"||type==="area"){
+    const y=k=>132-v[k]*1.04,xx=k=>28+k*28;
+    for(let k=0;k<4;k++)s+=ln(27,25+k*34,324,25+k*34,dim,.7,"3 6");
+    const p=Array.from({length:11},(_,k)=>`${f(xx(k))},${f(y(k))}`).join(" ");
+    s+=`<polygon points="28,132 ${p} 308,132" fill="url(#fill)" opacity=".32"/>`;
+    s+=`<polyline points="${p}" fill="none" stroke="${A}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+    const q=Array.from({length:11},(_,k)=>`${f(xx(k))},${f(128-(v[(k+3)%16]-.6*k)*.82)}`).join(" ");
+    s+=`<polyline points="${q}" fill="none" stroke="${B}" stroke-opacity=".8" stroke-width="1.6" stroke-dasharray="4 4"/>`;
+    for(let k=0;k<11;k+=2)s+=ci(xx(k),y(k),2.5,A);
+    ["T1","T3","T5","T7","T9","T11"].forEach((x,k)=>s+=tx(28+k*56,151,x,muted,9));
+  }
+  else if(type==="bar"){
+    s+=ln(23,137,324,137,dim,1);
+    for(let k=0;k<6;k++){const h=v[k]*1.03;const x=34+k*47;
+      s+=rc(x,137-h,17,h,k%2?C:A,3);
+      s+=rc(x+19,137-v[(k+6)%16]*.82,13,v[(k+6)%16]*.82,B,3);
+      s+=tx(x+14,153,cat[k].slice(0,8),muted,8);
+    }
+  }
+  else if(type==="hbar"){
+    for(let k=0;k<5;k++){const y=17+k*27;s+=tx(5,y+10,cat[k].slice(0,10),muted,9,"start");
+      s+=rc(107,y,205,13,"#1b2e44",5)+rc(107,y,(v[k]/100)*205,13,k%2?C:A,5);
+      s+=tx(318,y+11,v[k]+"%", "#c8eafa",9,"end");
+    }
+  }
+  else if(type==="donut"){
+    const parts=[v[0],v[1],v[2],v[3]],total=parts.reduce((a,b)=>a+b,0),colors=[A,C,B,D];let offset=0;
+    s+=ci(120,77,51,"none",`stroke="#1d3148" stroke-width="20"`);
+    parts.forEach((p,k)=>{let portion=p/total*320;
+      s+=`<circle cx="120" cy="77" r="51" fill="none" stroke="${colors[k]}" stroke-width="20" stroke-dasharray="${f(portion)} 400" stroke-dashoffset="${f(-offset)}" transform="rotate(-90 120 77)"/>`;offset+=portion});
+    s+=tx(120,76,"100%", "#e8faff",21);s+=tx(120,94,"PHÂN BỔ",muted,8);
+    parts.forEach((p,k)=>{s+=ci(230,29+k*31,4,colors[k]);s+=tx(242,33+k*31,cat[k].slice(0,14), "#a8c5dd",10,"start")});
+  }
+  else if(type==="heatmap"){
+    const hh=["T2","T3","T4","T5","T6","T7","CN"];
+    for(let x=0;x<7;x++)s+=tx(50+x*40,14,hh[x],muted,9);
+    for(let y=0;y<5;y++){s+=tx(15,38+y*25,`${y*4+4}h`,muted,9);
+      for(let x=0;x<7;x++){let q=n();s+=rc(34+x*40,24+y*25,34,20,`hsla(${m.hue},100%,${Math.round(25+q*42)}%,${f(.24+q*.71)})`,4)}}
+  }
+  else if(type==="gauge"){
+    const x=clamp(v[0],15,97),dash=(x/100)*330;
+    s+=`<path d="M 63 128 A 108 108 0 0 1 279 128" fill="none" stroke="${dim}" stroke-width="22" stroke-linecap="round"/>`;
+    s+=`<path d="M 63 128 A 108 108 0 0 1 279 128" fill="none" stroke="${A}" stroke-width="22" stroke-dasharray="${f(dash)} 400" stroke-linecap="round"/>`;
+    s+=tx(171,114,x+"%", "#effbff",30);s+=tx(171,134,"MỨC ĐẠT MỤC TIÊU",muted,9);s+=tx(61,153,"0%",muted,9);s+=tx(282,153,"100%",muted,9);
+  }
+  else if(type==="radar"){
+    const center=[168,80],r=64,pts=[];
+    for(let ring=1;ring<=4;ring++){let coords=Array.from({length:6},(_,k)=>[center[0]+Math.sin(k*Math.PI/3)*r*ring/4,center[1]-Math.cos(k*Math.PI/3)*r*ring/4].map(f).join(",")).join(" ");
+      s+=`<polygon points="${coords}" fill="none" stroke="${dim}" stroke-width=".7"/>`;}
+    for(let k=0;k<6;k++){let th=k*Math.PI/3,x=center[0]+Math.sin(th)*r,y=center[1]-Math.cos(th)*r;
+      s+=ln(...center,x,y,dim,1)+tx(center[0]+Math.sin(th)*86,center[1]-Math.cos(th)*86+3,cat[k].slice(0,10),muted,9);
+      pts.push([center[0]+Math.sin(th)*r*v[k]/100,center[1]-Math.cos(th)*r*v[k]/100].map(f).join(","))}
+    s+=`<polygon points="${pts.join(" ")}" fill="${A}" fill-opacity=".25" stroke="${A}" stroke-width="2"/>`;
+    pts.forEach(p=>{const [x,y]=p.split(",");s+=ci(x,y,2.3,A)});
+  }
+  else if(type==="scatter"){
+    for(let k=0;k<4;k++)s+=ln(28,23+k*36,325,23+k*36,dim,.8,"4 5");
+    for(let k=0;k<27;k++){const x=35+n()*285,y=28+(1-n())*102;
+      s+=ci(x,y,2+n()*3,k%4?A:B,`opacity="${f(.4+n()*.6)}"`) }
+    s+=tx(177,154,"BIẾN X · GIẢ ĐỊNH",muted,9);
+  }
+  else if(type==="bubble"){
+    for(let k=0;k<13;k++){const x=30+n()*276,y=20+n()*110,r=5+n()*17;
+      s+=ci(x,y,r,[A,C,B,D][k%4],`opacity=".23" stroke="${[A,C,B,D][k%4]}" stroke-width="1.4"`)}
+    s+=tx(170,154,"QUY MÔ TƯƠNG QUAN",muted,9);
+  }
+  else if(type==="waterfall"){
+    let current=48;
+    for(let k=0;k<7;k++){let next=clamp(current+((n()-.43)*32),18,88),from=130-current,yTo=130-next;let x=31+k*43;
+      s+=rc(x,Math.min(from,yTo),24,Math.abs(from-yTo)+3,next>current?A:B,2);
+      s+=ln(x+24,yTo,x+43,yTo,dim,1,"3 3");
+      s+=tx(x+12,151,k===0?"Đầu":k===6?"Cuối":"Δ"+k,muted,9);current=next}
+  }
+  else if(type==="funnel"){
+    for(let k=0;k<5;k++){const w=286-k*47,x=170-w/2,y=12+k*29,wb=w-37;
+      s+=`<polygon points="${f(x)},${y} ${f(x+w)},${y} ${f(170+wb/2)},${y+26} ${f(170-wb/2)},${y+26}" fill="${[A,C,B,D,A][k]}" opacity="${f(.84-k*.11)}"/>`;
+      s+=tx(170,y+17,(100-k*17)+"% · "+cat[k].slice(0,10),"#081425",9)}
+  }
+  else if(type==="treemap"){
+    const shapes=[[14,16,144,87,0],[162,16,164,45,1],[162,65,77,74,2],[244,65,82,74,3],[14,107,69,32,4],[87,107,71,32,5]];
+    shapes.forEach(([x,y,w,h,k])=>{s+=rc(x,y,w,h,[A,C,B,D,"#6affb0","#a780ff"][k],5);
+      s+=tx(x+8,y+18,cat[k].slice(0,Math.max(6,Math.floor(w/9))),"#06111d",10,"start");
+      if(h>50)s+=tx(x+9,y+36,v[k]+"%", "#122032",13,"start");});
+  }
+  else if(type==="stacked"){
+    for(let k=0;k<5;k++){let y=18+k*26,x=68,sizes=[.25+n()*.2,.18+n()*.17,.16+n()*.15,.1+n()*.12];
+      s+=tx(4,y+10,cat[k].slice(0,8),muted,9,"start");
+      sizes.forEach((z,j)=>{const w=235*z;s+=rc(x,y,w-2,16,[A,C,B,D][j],2);x+=w;})}
+  }
+  else if(type==="timeline"){
+    for(let k=0;k<5;k++){const y=20+k*26,start=35+15*n()*6,w=65+125*n();
+      s+=ln(26,y+7,318,y+7,dim,3);
+      s+=rc(start,y,w,14,[A,C,B,D,A][k],7);
+      s+=ci(start,y+7,3,"#e0f5ff");
+      s+=tx(5,y+11,k+1,muted,9,"start")}
+    s+=tx(170,155,"CHU KỲ THỰC HIỆN · MÔ PHỎNG",muted,9)
+  }
+  else if(type==="candlestick"){
+    s+=ln(25,138,318,138,dim);
+    for(let k=0;k<10;k++){let x=39+k*28,op=40+n()*63,cl=40+n()*63,lo=Math.max(op,cl)+n()*18,hi=Math.min(op,cl)-n()*20;
+      s+=ln(x,hi,x,lo,op>cl?A:B,1.6);
+      s+=rc(x-6,Math.min(op,cl),12,Math.abs(op-cl)+2,op>cl?A:B,1);
+      s+=tx(x,153,""+(k+1),muted,8)}
+  }
+  else if(type==="radial"){
+    const cx=168,cy=78;
+    for(let k=0;k<10;k++){const an=(k*Math.PI/5)-Math.PI/2,rr=19+v[k]*.6;
+      s+=ln(cx+Math.cos(an)*22,cy+Math.sin(an)*22,cx+Math.cos(an)*rr,cy+Math.sin(an)*rr,[A,C,B,D][k%4],9);
+    }
+    s+=ci(cx,cy,16,"#132338")+tx(cx,cy+4,"KPI","#d1edff",11);
+  }
+  let title=chartNames[type]+" · "+m.name;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 164" role="img" aria-label="${safe(title)}"><title>${safe(title)}</title><defs><linearGradient id="fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${A}" stop-opacity=".9"/><stop offset="1" stop-color="${A}" stop-opacity=".03"/></linearGradient></defs>${s}</svg>`;
+}
+function appShell(){
+ $("#app").innerHTML=`<aside class="sidebar">
+ <div class="brand"><span class="mark">▦</span><div><strong>NEON MATRIX</strong><small>KPI VISUAL STUDIO / 30</small></div></div>
+ <div class="searchBox"><span>⌕</span><input id="search" type="search" placeholder="Tìm lĩnh vực / dashboard" aria-label="Tìm dashboard"></div>
+ <select class="category" id="category" aria-label="Lọc theo ngành">${categories.map(c=>`<option>${safe(c)}</option>`).join("")}</select>
+ <div class="sidebar-label"><span>Thư viện mô hình</span><span id="found">30 / 30</span></div>
+ <nav class="model-list" id="model-list" aria-label="30 mô hình KPI"></nav>
+ <div class="side-bottom">● 30 mô hình · 270 đồ thị SVG<br>100% HTML tĩnh · Không cần API<br>LONG NGO 2026 · MIT</div>
+ </aside><main class="main"><header class="topbar">
+ <div class="head-left"><div class="eyebrow">Data Intelligence / Interactive Matrix</div><div class="headline">KPI Dashboard · Neon Visualization Laboratory</div></div>
+ <div class="actions"><button class="btn" data-action="copy-html" title="Sao chép toàn bộ HTML độc lập của mô hình đang chọn">⧉ Copy HTML</button><button class="btn primary" data-action="download-html">↓ Xuất HTML</button><button class="btn accent" data-action="download-all">↓ 30 Models</button></div>
+ </header><section id="dashboardArea" class="workspace"></section></main>`;
+ $("#category").value=ui.category;
+ $("#search").value=ui.search;
+ $("#search").addEventListener("input",e=>{ui.search=e.target.value;renderNav()});
+ $("#category").addEventListener("change",e=>{ui.category=e.target.value;renderNav()});
+ renderNav();renderDashboard();
+}
+function renderNav(){
+ const list=models.filter(m=>(ui.category==="Tất cả"||m.category===ui.category)&&(m.name+" "+m.subtitle+" "+m.category).toLocaleLowerCase("vi").includes(ui.search.toLocaleLowerCase("vi")));
+ $("#found").textContent=list.length+" / "+models.length;
+ $("#model-list").innerHTML=list.length?list.map(m=>`<button class="model-btn ${m.id===ui.id?"active":""}" data-id="${m.id}" title="${safe(m.name)}" aria-current="${m.id===ui.id?"page":"false"}"><span class="emoji">${m.icon}</span><span class="name">${safe(m.name)}</span><span class="num">${String(m.index+1).padStart(2,"0")}</span></button>`).join(""):`<div class="empty">Không tìm thấy mô hình phù hợp.</div>`;
+}
+function renderDashboard(){
+ const m=model(),types=typesFor(m),area=$("#dashboardArea");area.style.setProperty("--h",m.hue);
+ const keepScroll=area.scrollTop;
+ area.innerHTML=`<div class="overview"><div class="section-title"><div class="bigicon">${m.icon}</div><div><h1>${safe(m.name)} <span style="color:hsl(${m.hue} 100% 68%)">/ KPI Intelligence</span></h1><p>${safe(m.subtitle)} · 9 trực quan trong cùng ma trận</p></div></div><div class="flag">◈ DỮ LIỆU GIẢ ĐỊNH / DEMO</div></div>
+ <div class="toolbar"><div class="inline-controls"><label class="filter">◴ Chu kỳ <select id="period"><option value="7">7 ngày</option><option value="30">30 ngày</option><option value="90">90 ngày</option></select></label>
+ <label class="filter">⌖ Khu vực <select id="region"><option>Toàn quốc</option><option>Miền Bắc</option><option>Miền Trung</option><option>Miền Nam</option></select></label>
+ </div><div class="tool-actions"><span class="shortcuts">Mô phỏng có thể thay đổi dữ liệu hiển thị</span><button class="btn sim-toggle" data-action="toggle"><span class="sim-dot ${ui.running?"on":""}"></span>${ui.running?"Tạm dừng mô phỏng":"Chạy mô phỏng"}</button></div></div>
+ <div class="metrics">${m.metrics.map((x,k)=>`<article class="metric"><div><div class="label">${safe(x.label)}</div><div class="value">${safe(x.value)}</div></div><div class="delta">${safe(x.delta)}</div></article>`).join("")}</div>
+ <div class="matrix-head"><strong>◫ MATRIX 3 × 3 <span class="count"> / 09 VISUALIZATIONS</span></strong><span>Chỉ số quy đổi / đơn vị tương đối · <span id="simTime">Kỳ mô phỏng ${ui.tick}</span></span></div>
+ <div class="chart-grid">${types.map((t,i)=>`<article class="chart-card"><div class="chart-head"><span class="chart-title" title="${safe(chartNames[t])}">${String(i+1).padStart(2,"0")}. ${safe(chartNames[t])}</span><span class="tools"><button class="icon-btn" title="Mở rộng và giải thích" aria-label="Mở rộng biểu đồ ${i+1}" data-action="expand" data-i="${i}">⤢</button><button class="icon-btn" title="Copy SVG biểu đồ" aria-label="Copy SVG biểu đồ ${i+1}" data-action="copy-svg" data-i="${i}">⧉</button></span></div><div class="chart-content">${svgChart(t,m,i)}</div><div class="chart-foot"><span>${safe(m.axes[i%m.axes.length])}</span><em>${safe(t.toUpperCase())} · DEMO</em></div></article>`).join("")}</div>
+ <footer class="footer"><span>Dữ liệu demo · Chỉ số mang tính chất mô phỏng · Long Ngo 2026 · Giấy phép MIT</span><span>30 models · 9 charts / model · <a href="https://github.com/Base27-CVNSS/dashboard" target="_blank" rel="noopener">GitHub Source ↗</a></span></footer>`;
+ $("#period").value=ui.period;$("#region").value=ui.region;
+ $("#period").addEventListener("change",e=>{ui.period=e.target.value;renderDashboard()});
+ $("#region").addEventListener("change",e=>{ui.region=e.target.value;renderDashboard()});
+ area.scrollTop=keepScroll;
+}
+function message(s){const el=$("#toast");el.textContent=s;el.style.display="block";clearTimeout(toastTimer);toastTimer=setTimeout(()=>{el.style.display="none"},3000)}
+async function copyText(s){
+ try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(s);message("Đã sao chép vào clipboard");return}}
+ catch(e){}
+ const ta=document.createElement("textarea");ta.value=s;ta.style.cssText="position:fixed;left:-9999px;top:0";document.body.appendChild(ta);ta.select();
+ try{if(document.execCommand("copy"))message("Đã sao chép vào clipboard");else message("Không thể sao chép: hãy dùng Xuất HTML")}
+ catch(e){message("Không thể sao chép: hãy dùng Xuất HTML")}
+ finally{ta.remove()}
+}
+function exportedHtml(single){
+ const clone=document.documentElement.cloneNode(true);
+ const chosen=single?[model()]:models;
+ clone.querySelector("#model-data").textContent=JSON.stringify(chosen).replace(/</g,"\\u003c");
+ clone.querySelector("#app").innerHTML="";
+ const dialog=clone.querySelector("#chart-modal");dialog.removeAttribute("open");dialog.querySelector(".modal-body").innerHTML="";
+ clone.querySelector("#toast").textContent="";clone.querySelector("#toast").removeAttribute("style");
+ const html="<!doctype html>\n"+clone.outerHTML;
+ return html;
+}
+function downloadText(filename,content,type="text/html;charset=utf-8"){
+ const url=URL.createObjectURL(new Blob([content],{type}));
+ const a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000)
+}
+function expand(i){
+ const m=model(),type=typesFor(m)[i],dialog=$("#chart-modal");
+ dialog.querySelector("#modal-title").textContent=chartNames[type]+" — "+m.name;
+ dialog.querySelector(".modal-body").innerHTML=`<div id="full-svg">${svgChart(type,m,i,true)}</div><p><strong>Giải thích:</strong> ${safe(chartsDescriptions[type])} Trục, nhóm và giá trị trong mô hình này được sinh có kiểm soát để trình diễn kỹ thuật trực quan hóa, không đại diện dữ liệu thực tế của doanh nghiệp hoặc cơ quan.</p><div class="modal-actions"><button class="btn" data-action="copy-svg" data-i="${i}">⧉ Copy SVG</button><button class="btn primary" data-action="download-svg" data-i="${i}">↓ Xuất SVG</button></div>`;
+ if(typeof dialog.showModal==="function")dialog.showModal();else dialog.setAttribute("open","");
+}
+document.addEventListener("click",e=>{
+ const nav=e.target.closest("[data-id]");if(nav){ui.id=nav.dataset.id;ui.tick=0;renderNav();renderDashboard();$("#dashboardArea").scrollTop=0;return}
+ const b=e.target.closest("[data-action]");if(!b)return;
+ const action=b.dataset.action,i=Number(b.dataset.i);
+ if(action==="toggle"){ui.running=!ui.running;renderDashboard()}
+ else if(action==="download-html")downloadText("kpi-"+model().id+"-matrix.html",exportedHtml(true))
+ else if(action==="download-all")downloadText("neon-matrix-30-models.html",exportedHtml(false))
+ else if(action==="copy-html")copyText(exportedHtml(true))
+ else if(action==="expand")expand(i)
+ else if(action==="copy-svg")copyText(svgChart(typesFor(model())[i],model(),i))
+ else if(action==="download-svg")downloadText("kpi-"+model().id+"-"+(i+1)+".svg",svgChart(typesFor(model())[i],model(),i),"image/svg+xml;charset=utf-8")
+ else if(action==="close-modal")$("#chart-modal").close();
+});
+document.addEventListener("keydown",e=>{if(e.key==="/"&&!e.ctrlKey&&!e.metaKey&&e.target.tagName!=="INPUT"){const search=$("#search");if(search&&search.offsetParent){e.preventDefault();search.focus()}}});
+setInterval(()=>{if(ui.running){ui.tick++;renderDashboard()}},4800);
+appShell();
+})();</script></body></html>
